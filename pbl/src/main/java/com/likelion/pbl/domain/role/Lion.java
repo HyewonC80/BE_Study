@@ -1,4 +1,4 @@
-package com.likelion.pbl.role;
+package com.likelion.pbl.domain.role;
 
 import com.likelion.pbl.policy.LionSubmissionPolicy;
 import com.likelion.pbl.policy.SubmissionPolicy;
@@ -10,6 +10,10 @@ public class Lion extends Role {
 	public Lion(String name, String major, int generation, String part, String studentId) {
 		super(name, major, generation, part);
 		this.studentId = studentId;
+	}
+
+	public String getStudentId() {
+		return studentId;
 	}
 
 	@Override

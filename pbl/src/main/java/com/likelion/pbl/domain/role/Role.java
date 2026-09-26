@@ -1,4 +1,4 @@
-package com.likelion.pbl.role;
+package com.likelion.pbl.domain.role;
 
 import com.likelion.pbl.policy.SubmissionPolicy;
 

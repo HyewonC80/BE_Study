@@ -1,7 +1,15 @@
 package com.likelion.pbl.service;
 
+import com.likelion.pbl.domain.role.Lion;
+import com.likelion.pbl.domain.role.Role;
+import com.likelion.pbl.domain.role.Staff;
+import com.likelion.pbl.dto.LionCreateRequest;
+import com.likelion.pbl.dto.LionResponse;
+import com.likelion.pbl.dto.LionUpdateRequest;
+import com.likelion.pbl.dto.StaffCreateRequest;
+import com.likelion.pbl.dto.StaffResponse;
+import com.likelion.pbl.dto.StaffUpdateRequest;
 import com.likelion.pbl.repository.MemberRepository;
-import com.likelion.pbl.role.Role;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -16,16 +24,44 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	public boolean register(Role member) {
-		if (memberRepository.existsByName(member.getName())) {
-			return false;
+	public LionResponse createLion(LionCreateRequest request) {
+		if (memberRepository.existsByName(request.name())) {
+			return null;
 		}
-		memberRepository.save(member);
-		return true;
+		Lion lion = new Lion(request.name(), request.major(), request.generation(), request.part(), request.studentId());
+		memberRepository.save(lion);
+		return LionResponse.from(lion);
 	}
 
-	public boolean existsByName(String name) {
-		return memberRepository.existsByName(name);
+	public StaffResponse createStaff(StaffCreateRequest request) {
+		if (memberRepository.existsByName(request.name())) {
+			return null;
+		}
+		Staff staff = new Staff(request.name(), request.major(), request.generation(), request.part(), request.position());
+		memberRepository.save(staff);
+		return StaffResponse.from(staff);
+	}
+
+	public LionResponse updateLion(String name, LionUpdateRequest request) {
+		if (!memberRepository.existsByName(name)) {
+			return null;
+		}
+		Lion updated = new Lion(name, request.major(), request.generation(), request.part(), request.studentId());
+		memberRepository.updateByName(name, updated);
+		return LionResponse.from(updated);
+	}
+
+	public StaffResponse updateStaff(String name, StaffUpdateRequest request) {
+		if (!memberRepository.existsByName(name)) {
+			return null;
+		}
+		Staff updated = new Staff(name, request.major(), request.generation(), request.part(), request.position());
+		memberRepository.updateByName(name, updated);
+		return StaffResponse.from(updated);
+	}
+
+	public boolean deleteMember(String name) {
+		return memberRepository.deleteByName(name);
 	}
 
 	public Optional<Role> findByName(String name) {

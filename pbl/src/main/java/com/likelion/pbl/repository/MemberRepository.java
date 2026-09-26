@@ -1,6 +1,6 @@
 package com.likelion.pbl.repository;
 
-import com.likelion.pbl.role.Role;
+import com.likelion.pbl.domain.role.Role;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +17,8 @@ public interface MemberRepository {
 	List<Role> findByPart(String part);
 
 	List<String> getRegisteredParts();
+
+	void updateByName(String name, Role member);
+
+	boolean deleteByName(String name);
 }
