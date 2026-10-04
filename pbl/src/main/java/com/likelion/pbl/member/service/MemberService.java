@@ -10,8 +10,10 @@ import com.likelion.pbl.member.dto.StaffUpdateRequest;
 import com.likelion.pbl.member.repository.MemberRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class MemberService {
 
 	private final MemberRepository memberRepository;
@@ -20,6 +22,7 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
+	@Transactional
 	public MemberResponse createLion(LionCreateRequest request) {
 		Member member = new Member(request.name(), request.major(), request.generation(), request.part(),
 			RoleType.LION, request.studentId(), null);
@@ -27,6 +30,7 @@ public class MemberService {
 		return MemberResponse.from(saved);
 	}
 
+	@Transactional
 	public MemberResponse createStaff(StaffCreateRequest request) {
 		Member member = new Member(request.name(), request.major(), request.generation(), request.part(),
 			RoleType.STAFF, null, request.position());
@@ -42,6 +46,7 @@ public class MemberService {
 		return memberRepository.findAll();
 	}
 
+	@Transactional
 	public MemberResponse updateLion(Long id, LionUpdateRequest request) {
 		Member member = memberRepository.findById(id).orElse(null);
 		if (member == null) {
@@ -53,6 +58,7 @@ public class MemberService {
 		return MemberResponse.from(saved);
 	}
 
+	@Transactional
 	public MemberResponse updateStaff(Long id, StaffUpdateRequest request) {
 		Member member = memberRepository.findById(id).orElse(null);
 		if (member == null) {
@@ -64,6 +70,7 @@ public class MemberService {
 		return MemberResponse.from(saved);
 	}
 
+	@Transactional
 	public boolean deleteMember(Long id) {
 		if (!memberRepository.existsById(id)) {
 			return false;
